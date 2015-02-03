@@ -1,0 +1,22 @@
+html, body {
+  font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  padding: 1em;
+}
+
+h1 {
+  margin: 0;
+}
+
+pre.logger {
+  font-family: Monaco, monospace;
+  height: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: .5em 1em;
+  border: 1px solid #ccc;
+}

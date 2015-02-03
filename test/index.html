@@ -3,59 +3,22 @@
   <head>
     <meta charset="utf-8">
     <script src="bundle.js"></script>
-    <style>
-
-      html, body {
-        font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        box-sizing: border-box;
-      }
-
-      body {
-        padding: 1em;
-      }
-
-      h1 {
-        margin: 0;
-      }
-
-      pre.logger {
-        font-family: Monaco, monospace;
-        height: 300px;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        padding: .5em 1em;
-        border: 1px solid #ccc;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <h1>Streamy test</h1>
-    <pre id="csv"></pre>
-    <pre id="json"></pre>
-    <script>
 
-function logger(id) {
-  var out = document.getElementById(id),
-      join = Array.prototype.join;
-  out.classList.add("logger");
-  return function() {
-    var content = join.call(arguments, " ");
-    requestAnimationFrame(function() {
-      var msg = document.createElement("div");
-      msg.textContent = content;
-      out.appendChild(msg);
-      out.scrollTop = msg.offsetTop;
-    });
-  };
-}
+    <section>
+      <p>Stream ~1.6MB CSV proxied from <a href="https://github.com/WhiteHouse/2016-budget-data/blob/master/data/budauth.csv">whitehouse/2016-budget-data</a></p>
+      <pre id="csv"></pre>
+    </section>
+
+    <section>
+      <p>Stream ~1.4MB JSON proxied from <a href="http://hhs.gov/data.json">hhs.gov/data.json</a></p>
+      <pre id="json"></pre>
+    </section>
+
+    <script>
 
 streamy.csv("budauth.csv", function(csv) {
   var log = logger("csv");
@@ -82,6 +45,21 @@ streamy.json("data.json", "dataset.*", function(json) {
     log("json: read", read, "rows in", (Date.now() - start) / 1000, "seconds");
   });
 });
+
+function logger(id) {
+  var out = document.getElementById(id),
+      join = Array.prototype.join;
+  out.classList.add("logger");
+  return function() {
+    var content = join.call(arguments, " ");
+    requestAnimationFrame(function() {
+      var msg = document.createElement("div");
+      msg.textContent = content;
+      out.appendChild(msg);
+      out.scrollTop = msg.offsetTop;
+    });
+  };
+}
 
     </script>
   </body>
