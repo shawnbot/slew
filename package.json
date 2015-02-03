@@ -1,12 +1,14 @@
 {
-  "name": "streamy",
+  "name": "slew",
   "version": "0.1.0",
   "description": "Streaming data formats in node and the browser",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
     "bundle": "browserify index-browserify.js > bundle.js",
-    "watch": "watchy -w index.js,index-browserify.js -- npm run bundle",
+    "bundle:min": "uglifyjs bundle.js > bundle.min.js",
+    "bundle:all": "npm run bundle && npm run bundle:min",
+    "watch": "watchy -w index.js,index-browserify.js -- npm run bundle:all",
     "test:server": "node test/server.js"
   },
   "author": "Shawn Allen <shawn.allen@hush.com>",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "express": "^4.11.2",
-    "mocha": "^2.1.0"
+    "mocha": "^2.1.0",
+    "uglifyjs": "^2.3.6"
   }
 }

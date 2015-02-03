@@ -1,2 +1,2 @@
-window.streamy = require(".")
+window.slew = require(".")
   .base(window.location.pathname);

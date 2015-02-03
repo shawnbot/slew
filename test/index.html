@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <h1>Streamy test</h1>
+    <h1>slew test</h1>
 
     <section>
       <p>Stream ~1.6MB CSV proxied from <a href="https://github.com/WhiteHouse/2016-budget-data/blob/master/data/budauth.csv">whitehouse/2016-budget-data</a></p>
@@ -20,7 +20,7 @@
 
     <script>
 
-streamy.csv("budauth.csv", function(csv) {
+slew.csv("budauth.csv", function(csv) {
   var log = logger("csv");
   log("csv: streaming");
   var read = 0,
@@ -33,7 +33,7 @@ streamy.csv("budauth.csv", function(csv) {
   });
 });
 
-streamy.json("data.json", "dataset.*", function(json) {
+slew.json("data.json", "dataset.*", function(json) {
   var log = logger("json");
   log("json: streaming");
   var read = 0,
