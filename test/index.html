@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script src="bundle.js"></script>
+    <style>
+
+      html, body {
+        font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+
+      body {
+        padding: 1em;
+      }
+
+      h1 {
+        margin: 0;
+      }
+
+      pre.logger {
+        font-family: Monaco, monospace;
+        height: 300px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        padding: .5em 1em;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Streamy test</h1>
+    <pre id="csv"></pre>
+    <pre id="json"></pre>
+    <script>
+
+function logger(id) {
+  var out = document.getElementById(id),
+      join = Array.prototype.join;
+  out.classList.add("logger");
+  return function() {
+    var content = join.call(arguments, " ");
+    requestAnimationFrame(function() {
+      var msg = document.createElement("div");
+      msg.textContent = content;
+      out.appendChild(msg);
+      out.scrollTop = msg.offsetTop;
+    });
+  };
+}
+
+streamy.csv("budauth.csv", function(csv) {
+  var log = logger("csv");
+  log("csv: streaming");
+  var read = 0,
+      start = Date.now();
+  csv.on("data", function(row) {
+    log("csv:", read++, row["Agency Name"]);
+  })
+  .on("end", function() {
+    log("csv: read", read, "rows in", (Date.now() - start) / 1000, "seconds");
+  });
+});
+
+streamy.json("data.json", "dataset.*", function(json) {
+  var log = logger("json");
+  log("json: streaming");
+  var read = 0,
+      start = Date.now();
+  json.on("data", function(obj) {
+    log("json:", read++, obj.title);
+  })
+  .on("end", function() {
+    log("json: read", read, "rows in", (Date.now() - start) / 1000, "seconds");
+  });
+});
+
+    </script>
+  </body>
+</html>
