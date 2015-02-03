@@ -40,7 +40,7 @@ module.exports = {
   json: function(url, path, callback) {
     if (arguments.length === 2) {
       callback = path;
-      options = "*";
+      path = ".";
     }
     var req = makeRequest(url),
         parse = JSONStream.parse(path);
