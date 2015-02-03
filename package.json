@@ -7,7 +7,7 @@
     "test": "mocha",
     "bundle": "browserify index-browserify.js > bundle.js",
     "watch": "watchy -w index.js,index-browserify.js -- npm run bundle",
-    "test:server", "node test/server.js"
+    "test:server": "node test/server.js"
   },
   "author": "Shawn Allen <shawn.allen@hush.com>",
   "license": "ISC",
