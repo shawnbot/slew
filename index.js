@@ -5,6 +5,8 @@ var csv = require("csv-parser"),
 
 var baseUrl = "";
 module.exports = {
+  version: require("./package.json").version,
+
   /*
    * Get or set the base URL for requests.
    * See usage in index-browserify.js

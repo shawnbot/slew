@@ -10,6 +10,8 @@ var csv = require("csv-parser"),
 
 var baseUrl = "";
 module.exports = {
+  version: require("./package.json").version,
+
   /*
    * Get or set the base URL for requests.
    * See usage in index-browserify.js
@@ -78,7 +80,7 @@ function makeRequest(req) {
   return req;
 }
 
-},{"JSONStream":3,"csv-parser":38,"http":11,"url":35}],3:[function(require,module,exports){
+},{"./package.json":43,"JSONStream":3,"csv-parser":38,"http":11,"url":35}],3:[function(require,module,exports){
 (function (process,Buffer){
 
 
@@ -7786,4 +7788,35 @@ function isProperty(str) {
 module.exports = isProperty
 },{}],42:[function(require,module,exports){
 arguments[4][15][0].apply(exports,arguments)
-},{"dup":15}]},{},[1]);
+},{"dup":15}],43:[function(require,module,exports){
+module.exports={
+  "name": "slew",
+  "version": "0.1.1",
+  "description": "Streaming data formats in node and the browser",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "bundle": "browserify index-browserify.js > bundle.js",
+    "bundle:min": "uglifyjs bundle.js > bundle.min.js",
+    "bundle:all": "npm run bundle && npm run bundle:min",
+    "watch": "watchy -w index.js,index-browserify.js -- npm run bundle:all",
+    "test:server": "node test/server.js"
+  },
+  "author": "Shawn Allen <shawn.allen@hush.com>",
+  "license": "ISC",
+  "dependencies": {
+    "JSONStream": "^0.10.0",
+    "browserify": "^8.1.3",
+    "csv-parser": "^1.5.0",
+    "http-proxy": "^1.8.1",
+    "ldjson-stream": "^1.2.1",
+    "watchy": "^0.6.0"
+  },
+  "devDependencies": {
+    "express": "^4.11.2",
+    "mocha": "^2.1.0",
+    "uglifyjs": "^2.3.6"
+  }
+}
+
+},{}]},{},[1]);
