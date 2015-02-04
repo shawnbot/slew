@@ -7,7 +7,7 @@ providing streaming loaders for CSV and JSON data. Just add the included
 <script src="bundle.min.js"></script>
 ```
 
-Then stream some data!
+You can also link directly to the [Browserify CDN](https://wzrd.in)-hosted build at: https://wzrd.in/standalone/slew@latest
 
 ### `slew.csv(url, [options,] callback)`
 Streams CSV row-by-row with [csv-parser], providing a stream to the
