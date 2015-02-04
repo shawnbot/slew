@@ -7791,15 +7791,19 @@ arguments[4][15][0].apply(exports,arguments)
 },{"dup":15}],43:[function(require,module,exports){
 module.exports={
   "name": "slew",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Streaming data formats in node and the browser",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shawnbot/slew.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "mocha",
     "bundle": "browserify index-browserify.js > bundle.js",
     "bundle:min": "uglifyjs bundle.js > bundle.min.js",
     "bundle:all": "npm run bundle && npm run bundle:min",
-    "watch": "watchy -w index.js,index-browserify.js -- npm run bundle:all",
+    "watch": "watchy -w index.js,index-browserify.js,package.json -- npm run bundle:all",
     "test:server": "node test/server.js"
   },
   "author": "Shawn Allen <shawn.allen@hush.com>",
