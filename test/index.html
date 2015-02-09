@@ -20,31 +20,33 @@
 
     <script>
 
-slew.csv("budauth.csv", function(csv) {
-  var log = logger("csv");
-  log("csv: streaming");
-  var read = 0,
-      start = Date.now();
-  csv.on("data", function(row) {
-    log("csv:", read++, row["Agency Name"]);
-  })
-  .on("end", function() {
-    log("csv: read", read, "rows in", (Date.now() - start) / 1000, "seconds");
+var csv = slew.csv()
+  .open("budauth.csv", function() {
+    var log = logger("csv");
+    log("csv: streaming");
+    var read = 0,
+        start = Date.now();
+    csv.on("data", function(row) {
+      log("csv:", read++, row["Agency Name"]);
+    })
+    .on("end", function() {
+      log("csv: read", read, "rows in", (Date.now() - start) / 1000, "seconds");
+    });
   });
-});
 
-slew.json("data.json", "dataset.*", function(json) {
-  var log = logger("json");
-  log("json: streaming");
-  var read = 0,
-      start = Date.now();
-  json.on("data", function(obj) {
-    log("json:", read++, obj.title);
-  })
-  .on("end", function() {
-    log("json: read", read, "rows in", (Date.now() - start) / 1000, "seconds");
+var json = slew.json("dataset.*")
+  .open("data.json", function() {
+    var log = logger("json");
+    log("json: streaming");
+    var read = 0,
+        start = Date.now();
+    json.on("data", function(obj) {
+      log("json:", read++, obj.title);
+    })
+    .on("end", function() {
+      log("json: read", read, "rows in", (Date.now() - start) / 1000, "seconds");
+    });
   });
-});
 
 function logger(id) {
   var out = document.getElementById(id),

@@ -1,11 +1,19 @@
 var csv = require("csv-parser"),
-    url = require("url"),
+    _url = require("url"),
+    events = require("events"),
+    extend = require("util-extend"),
     JSONStream = require("JSONStream"),
-    http = require("http");
+    http = require("http"),
+    https = require("https"),
+    pkg = require("./package.json"),
+    baseUrl = "";
 
-var baseUrl = "";
 module.exports = {
-  version: require("./package.json").version,
+  version: pkg.version,
+
+  format: createFormat,
+  csv: createFormat(csv),
+  json: createFormat(JSONStream.parse),
 
   /*
    * Get or set the base URL for requests.
@@ -17,56 +25,65 @@ module.exports = {
       return this;
     }
     return baseUrl;
-  },
-
-  /*
-   * Open a streaming CSV (comma-separated values) request.
-   * see <http://npmjs.com/package/csv-parser> for options.
-   */
-  csv: function(url, options, callback) {
-    if (arguments.length === 2) {
-      callback = options;
-      options = {};
-    }
-    var req = makeRequest(url),
-        parse = csv(options);
-    return http.get(req, function(res) {
-      callback(res.pipe(parse));
-    });
-  },
-
-  /*
-   * Open a streaming JSON values) request.
-   * See <https://www.npmjs.com/package/JSONStream> for options.
-   */
-  json: function(url, path, callback) {
-    if (arguments.length === 2) {
-      callback = path;
-      path = ".";
-    }
-    var req = makeRequest(url),
-        parse = JSONStream.parse(path);
-    return http.get(req, function(res) {
-      callback(res.pipe(parse));
-    });
-  },
-
-  makeRequest: makeRequest
+  }
 };
 
-/*
- * Build a request object from a relative path or parsed URL:
- *
- * makeRequest("foo") === {path: baseUrl + "foo"}
- * makeRequest("/foo") === {path: "/foo"}
- * makeRequest("http://foo.com") === {host: "foo.com", protocol: "http", ...}
- */
+function createFormat(createParser) {
+  return function customFormat(options) {
+    var req;
+    if (arguments.length > 1) {
+      req = options;
+      options = arguments[1];
+    }
+
+    var stream = new events.EventEmitter(),
+        base = baseUrl,
+        parser = createParser(options);
+
+    stream.baseUrl = function(url) {
+      if (!arguments.length) return base;
+      base = url;
+      return stream;
+    };
+
+    stream.open = function(url, done) {
+      var req = makeRequest(url);
+          hypertext = (req.protocol === "https")
+            ? https
+            : http,
+          parse = createParser(options);
+
+      hypertext.get(req, function(res) {
+        stream.emit('start', req, res);
+        res.pipe(parse)
+          .on('data', function ondata(data) {
+            stream.emit('data', data);
+          })
+          .on('error', function onerror(error) {
+            stream.emit('error', error);
+            // XXX close the stream?
+          })
+          .on('end', function onend() {
+            stream.emit('end');
+          });
+        if (done) done(null, res);
+      });
+
+      return stream;
+    };
+
+    return req
+      ? stream.open(req)
+      : stream;
+  };
+}
+
 function makeRequest(req) {
   if (typeof req === "string") {
     if (req.charAt(0) === "/") {
       return {path: req};
     } else {
-      var parsed = url.parse(req);
+      var parsed = _url.parse(req);
       return (parsed.protocol)
         ? parsed
         : {path: baseUrl + req};
