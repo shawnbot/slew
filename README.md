@@ -14,14 +14,14 @@ Returns an object that streams CSV row-by-row using [csv-parser]. The returned o
 
 ```js
 slew.csv()
-  .open("path/to/data.csv", function(stream) {
+  .open('path/to/data.csv', function(stream) {
     var rows = [];
     stream
-      .on("data", function(row) {
+      .on('data', function(row) {
         rows.push(row);
       })
-      .on("end", function() {
-        console.log("all done!");
+      .on('end', function() {
+        console.log('all done!');
       });
   });
 ```
@@ -45,7 +45,7 @@ slew.csv({separator: '\t'})
 ```
 
 ### `slew.json([path])`
-Like `csv()`, the `json()` function streams data from a potentially large JSON file, emitting a `data` event whenever the optional [JSONStream path] is matched in the output:
+Like `csv()`, the `json()` function streams data from a potentially large JSON file, emitting a `data` event whenever the optional [JSONStream path] is matched in the output. The default path is `.*`, which will match each item in a top-level JSON array.
 
 ```js
 /*
