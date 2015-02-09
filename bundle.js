@@ -7858,7 +7858,7 @@ function extend(origin, add) {
 },{}],45:[function(require,module,exports){
 module.exports={
   "name": "slew",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Streaming data formats in node and the browser",
   "repository": {
     "type": "git",
